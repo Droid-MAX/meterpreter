@@ -1,0 +1,96 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          frpc
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: frpc service
+# Description:       frpc service daemon
+### END INIT INFO
+
+PID=0
+PIDFILE=/var/run/frpc.pid
+OUTFILE=/dev/null
+
+run(){
+	frpc -c /etc/frpc.ini >> $OUTFILE 2>&1 & echo $! > $PIDFILE
+}
+
+init(){
+	if [ -f $PIDFILE ]; then
+		PID=`cat $PIDFILE`
+	fi
+}
+
+check(){
+	if [ $PID -eq 0 ]; then
+		return 1
+	else
+		kill -0 $PID 2> $OUTFILE
+	fi
+}
+
+start(){
+	init
+	check
+	if [ $? -eq 0 ]; then
+		echo "frpc is running!" && exit 1
+	else
+		run
+		echo "start frpc!" && exit 0
+	fi
+}
+
+stop(){
+	init
+	check
+	if [ $? ]; then
+		kill -9 $PID > $OUTFILE 2>&1
+		echo "stop frpc!" && exit 0
+	else
+		echo "frpc is stopped!" && exit 1
+	fi
+}
+
+restart(){
+	init
+	check
+	if [ $? -eq 0 ]; then
+		kill -9 $PID > $OUTFILE 2>&1
+	fi
+	run
+	echo "restart frpc!" && exit 0
+}
+
+status(){
+	init
+	check
+	if [ $? -eq 0 ]; then
+		echo "frpc is running!" && exit 0
+	else
+		echo "frpc is stopped!" && exit 1
+	fi
+}
+
+case "$1" in
+	start)
+		$1
+		exit 0
+		;;
+	stop)
+		$1
+		exit 0
+		;;
+	restart)
+		$1
+		exit 0
+		;;
+	status)
+		$1
+		exit 0
+		;;
+	*)
+		echo 'Usage: {start|stop|restart|status}'
+		;;
+esac

