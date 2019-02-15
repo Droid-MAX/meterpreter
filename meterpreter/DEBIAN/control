@@ -1,0 +1,9 @@
+Package: meterpreter
+Version: 1.0
+Depends: php
+Section: utils
+Priority: optional
+Architecture: all
+Installed-Size: 1679
+Maintainer: linux.org
+Description: hello world !
