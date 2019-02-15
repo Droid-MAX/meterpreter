@@ -14,7 +14,7 @@ PIDFILE=/var/run/frpc.pid
 OUTFILE=/dev/null
 
 run(){
-	frpc -c /etc/frpc.ini >> $OUTFILE 2>&1 & echo $! > $PIDFILE
+	/usr/bin/frpc -c /etc/frpc.ini >> $OUTFILE 2>&1 & echo $! > $PIDFILE
 }
 
 init(){

