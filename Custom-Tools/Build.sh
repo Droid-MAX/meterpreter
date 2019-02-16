@@ -4,15 +4,12 @@ function wrap() {
 }
 
 function build-deb {
-  case "$ot" in
-    deb )
-      name=${time}.deb
-      dpkg-deb -b "../meterpreter/" "${name}" &>Buildlog.txt & pid=$!
-      Check-run "$pid"
-      Check-op "${name}"
-      echo "Output file: `pwd`/${name}"
-      ;;
-  esac
+    name=${time}.deb
+    dpkg-deb -b "../meterpreter/" "${name}" &>Buildlog.txt & pid=$!
+    Check-run "$pid"
+    Check-op "${name}"
+    sed -i '6c Architecture: all' "../meterpreter/DEBIAN/control"
+    echo "Output file: `pwd`/${name}"
 }
 
 function Check-op() {
