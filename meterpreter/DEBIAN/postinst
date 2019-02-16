@@ -1,4 +1,2 @@
 #!/bin/sh
 systemctl daemon-reload
-systemctl enable meterpreter.service
-systemctl restart meterpreter.service
